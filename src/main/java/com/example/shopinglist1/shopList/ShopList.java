@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,16 +17,22 @@ import javax.persistence.*;
 @Entity
 @Table()
 public class ShopList {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
     private long shopListId;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
     @JsonIgnore
-    private Product product;
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "shopList"
+    )
+    private List<Product> products = new ArrayList<>();
 }

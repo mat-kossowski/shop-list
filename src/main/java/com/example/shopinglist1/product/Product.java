@@ -1,5 +1,6 @@
 package com.example.shopinglist1.product;
 
+import com.example.shopinglist1.shopList.ShopList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,13 +23,17 @@ public class Product {
     @Enumerated
     private Category category;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shopList_id")
+    private ShopList shopList;
 
-    public Product(String productName, String productAmount) {
-        this.productName = productName;
-        this.productAmount = productAmount;
+
+//    public Product(String productName, String productAmount) {
+//        this.productName = productName;
+//        this.productAmount = productAmount;
 //        this.category = category;
-        this.productStatus = false;
-    }
+//        this.productStatus = false;
+//    }
 public enum Category {
     NABIAL,
     MIESO,

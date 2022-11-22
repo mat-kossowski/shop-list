@@ -27,6 +27,10 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
     private List<ShopList> shopLists = new ArrayList<>();
 }
