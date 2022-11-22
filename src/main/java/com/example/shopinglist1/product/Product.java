@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Product {
     @Id
     @GeneratedValue
-    private int productId;
+    private Long productId;
     private String productName;
     private String productAmount;
     private boolean productStatus;

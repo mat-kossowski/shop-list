@@ -17,7 +17,7 @@ public class MyProductService {
     }
 
     public Product addProduct(String productName, String productAmount) {
-        return productRepository.save(new Product(productName, productAmount));
+        return productRepository.save(new Product());
     }
 
     public List<Product> getProducts() {

@@ -37,7 +37,7 @@ public class ProductController {
     public Product updateProductStatus(
             @RequestBody Product product
             ){
-        return productService.updateProductStatus(product.getProductId(),product.isProductStatus());
+        return productService.updateProductStatus(Math.toIntExact(product.getProductId()),product.isProductStatus());
 
     }
     @PutMapping("/product/amount/{productId}")
