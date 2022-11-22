@@ -1,4 +1,4 @@
-package com.example.shopinglist1.model;
+package com.example.shopinglist1.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="product")
+@Table(name="products")
 public class Product {
     @Id
     @GeneratedValue
@@ -18,8 +18,9 @@ public class Product {
     private String productName;
     private String productAmount;
     private boolean productStatus;
-//    @Enumerated
-//    private Category category;
+
+    @Enumerated
+    private Category category;
 
 
     public Product(String productName, String productAmount) {
@@ -28,6 +29,12 @@ public class Product {
 //        this.category = category;
         this.productStatus = false;
     }
-
+public enum Category {
+    NABIAL,
+    MIESO,
+    WARZYWA,
+    CHEMIA,
+    INNE
+}
 
 }

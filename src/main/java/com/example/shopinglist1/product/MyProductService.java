@@ -1,8 +1,5 @@
-package com.example.shopinglist1.service;
+package com.example.shopinglist1.product;
 
-import com.example.shopinglist1.model.Category;
-import com.example.shopinglist1.model.Product;
-import com.example.shopinglist1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -11,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductService {
+public class MyProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public MyProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 

@@ -1,8 +1,5 @@
-package com.example.shopinglist1.controller;
+package com.example.shopinglist1.product;
 
-import com.example.shopinglist1.model.Category;
-import com.example.shopinglist1.model.Product;
-import com.example.shopinglist1.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +9,10 @@ import java.util.List;
 @CrossOrigin(origins = "https://listazakupowreact.alwaysdata.net")
 public class ProductController {
 
-    private ProductService productService;
+    private MyProductService productService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(MyProductService productService) {
         this.productService = productService;
     }
 
