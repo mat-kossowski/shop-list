@@ -10,10 +10,11 @@ public class Start {
 
     public Start(UserRepository userRepository, PasswordEncoder passwordEncoder){
 
-        User user = new User();
-        user.setUserName("Mateusz2");
-        user.setRole("ROLE_ADMIN");
-        user.setPassword(passwordEncoder.encode("Mateusz123"));
-        userRepository.save(user);
+//        User user = new User();
+//        user.setUserName("Mateusz");
+//        user.setEmail("mateusz@com.pl");
+//        user.setRole("ROLE_ADMIN");
+//        user.setPassword(passwordEncoder.encode("Mateusz123"));
+//        userRepository.save(user);
     }
 }

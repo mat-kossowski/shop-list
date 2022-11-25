@@ -1,5 +1,6 @@
 package com.example.shopinglist1;
 
+import com.example.shopinglist1.user.User;
 import com.example.shopinglist1.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,18 +10,18 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
-
-
-    private UserRepository userRepository;
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    public UserDetailServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
+
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUserByUserName(username).get();
+    public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new CustomUserDetails(user);
     }
 }

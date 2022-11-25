@@ -20,16 +20,17 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
     private Long userId;
     private String userName;
+    @Column(nullable = false, unique = true,length = 45)
     private String email;
     private String role;
-    @JsonIgnore
+
     private String password;
 
     @JsonIgnore
@@ -40,37 +41,7 @@ public class User implements UserDetails {
     )
     private List<ShopList> shopLists = new ArrayList<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role));
-    }
-
-    @Override
-    public String getUsername() {
-        return userName;
-    }
-     @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public Long getUserId() {
+        return userId;
     }
 }

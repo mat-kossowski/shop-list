@@ -1,56 +1,67 @@
 package com.example.shopinglist1.product;
 
+import com.example.shopinglist1.shopList.ShopList;
+import com.example.shopinglist1.shopList.ShopListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "https://listazakupowreact.alwaysdata.net")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
 
-    private MyProductService productService;
+    private ProductService productService;
+    private ShopListService shopListService;
+
 
     @Autowired
-    public ProductController(MyProductService productService) {
+    public ProductController(ProductService productService, ShopListService shopListService) {
         this.productService = productService;
+        this.shopListService = shopListService;
     }
 
     @PostMapping("/product/new")
-    public Product addProduct(
-            @RequestBody Product product){
-        return productService.addProduct(product.getProductName(),product.getProductAmount());
-    }
-    @GetMapping("/products")
-    public List<Product> getProducts(){
-        return productService.getProducts();
+    public ResponseEntity<Product> postProduct(@RequestBody Product newProduct){
+        productService.addProduct(newProduct);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
     }
 
-     @GetMapping("/product/{productId}")
-    public Product getProduct(
-            @PathVariable("productId") int productId){
-        return productService.getProduct(productId);
+    @GetMapping(value ="/products/{shopListId}", produces = "application/json")
+    public List<Product> getProducts(@PathVariable long shopListId){
+        Optional<ShopList> shopList = shopListService.getShopListById(shopListId);
+        return productService.getProductsByShopList(shopList.get());
+
     }
 
 
-    @PutMapping("/product/status/{productId}")
-    public Product updateProductStatus(
-            @RequestBody Product product
-            ){
-        return productService.updateProductStatus(Math.toIntExact(product.getProductId()),product.isProductStatus());
-
-    }
-    @PutMapping("/product/amount/{productId}")
-    public void updateProductAmount(
-            @PathVariable("productId") int productId,
-            @RequestParam("productAmount") String productAmount
-            ){
-        productService.updateProductAmount(productId,productAmount);
+     @GetMapping(value ="/product/{productId}", produces = "application/json")
+    public Optional<Product> getProduct(@PathVariable("productId") long productId){
+        return productService.getProductById(productId);
     }
 
-    @DeleteMapping("/products/{productId}")
-    public boolean deleteProduct(@PathVariable("productId") int productId){
-        return productService.deleteById(productId);
 
-    }
+//    @PutMapping("/product/status/{productId}")
+//    public Product updateProductStatus(
+//            @RequestBody Product product
+//            ){
+//        return productService.updateProductStatus(Math.toIntExact(product.getProductId()),product.isProductStatus());
+//
+//    }
+//    @PutMapping("/product/amount/{productId}")
+//    public void updateProductAmount(
+//            @PathVariable("productId") long productId,
+//            @RequestParam("productAmount") String productAmount
+//            ){
+//        productService.updateProductAmount(productId,productAmount);
+//    }
+
+//    @DeleteMapping("/products/{productId}")
+//    public boolean deleteProduct(@PathVariable("productId") long productId){
+//        return productService.deleteById(productId);
+//
+//    }
 }
