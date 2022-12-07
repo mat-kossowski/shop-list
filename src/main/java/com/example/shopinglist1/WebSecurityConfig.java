@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-//        http.cors().disable();
+        http.cors().disable();
         http.headers().disable();
         http.exceptionHandling().authenticationEntryPoint(
                 ((request, response, authException) -> {
@@ -69,10 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
         ).and();
         http.authorizeRequests()
-                .antMatchers("/login")
+                .antMatchers("/**")
 
-                .permitAll()
-                .anyRequest().authenticated();
+                .permitAll();
         http.addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class);
 
 //       http.authorizeRequests()
@@ -89,3 +88,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .logoutSuccessUrl("/").permitAll();
     }
 }
+
