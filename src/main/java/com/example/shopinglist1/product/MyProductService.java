@@ -1,8 +1,10 @@
 package com.example.shopinglist1.product;
 
+import com.example.shopinglist1.payload.response.MessageResponse;
 import com.example.shopinglist1.shopList.ShopList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +19,10 @@ public class MyProductService implements ProductService {
         this.productRepository = productRepository;
     }
 
-    public boolean addProduct(Product product) {
+    @Override
+    public ResponseEntity<MessageResponse> addProduct(Product product) {
         productRepository.save(product);
-        return true;
+        return ResponseEntity.ok(new MessageResponse("Product Add!"));
     }
 
     @Override

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -23,6 +24,7 @@ public class ShopList {
     @Column(columnDefinition = "serial")
     private long shopListId;
 
+    private String listName;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -35,4 +37,10 @@ public class ShopList {
             mappedBy = "shopList"
     )
     private List<Product> products = new ArrayList<>();
+
+
+    public ShopList(String listName, User user) {
+        this.listName = listName;
+        this.user = user;
+    }
 }
