@@ -67,6 +67,7 @@ public class WebSecurityConfig {
 //                .antMatchers(HttpMethod.POST, "/api/visit").hasAnyAuthority(ADMIN, USER)
 //                .antMatchers(HttpMethod.GET, "/api/clinic/**").hasAnyAuthority(ADMIN, USER)
 //                .antMatchers(HttpMethod.GET, "/api/patient/**").hasAnyAuthority(ADMIN, USER)
+                .antMatchers(HttpMethod.GET, "/api/shoplist/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/api/shoplist/**").hasRole("USER")
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/**").permitAll().anyRequest().authenticated();

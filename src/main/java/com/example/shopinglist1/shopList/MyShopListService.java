@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,13 @@ public class MyShopListService implements ShopListService {
         ShopList shopList = new ShopList(listName, user);
         shopListRepository.save(shopList);
         return ResponseEntity.ok(new MessageResponse("Add new Shop List!"));
+    }
+
+    @Override
+    public List<ShopList> getShopListsUser(String userName) {
+        User user = userService.getUserByUserName(userName).get();
+
+        return shopListRepository.findShopListsByUser(user);
     }
 
 
