@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public interface ProductService {
 
-    ResponseEntity<MessageResponse> addProduct(Product product);
+    ResponseEntity<MessageResponse> addProduct(Product product, Long shopListId);
     Optional<Product> getProductById(long productId);
     public List<Product> getProductsByShopList(ShopList shopList);
 }

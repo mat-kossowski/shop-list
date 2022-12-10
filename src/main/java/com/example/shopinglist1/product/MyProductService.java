@@ -2,8 +2,9 @@ package com.example.shopinglist1.product;
 
 import com.example.shopinglist1.payload.response.MessageResponse;
 import com.example.shopinglist1.shopList.ShopList;
+import com.example.shopinglist1.shopList.ShopListRepository;
+import com.example.shopinglist1.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +14,27 @@ import java.util.Optional;
 @Service
 public class MyProductService implements ProductService {
     private ProductRepository productRepository;
+    private UserService userService;
+    private ShopListRepository shopListRepository;
 
     @Autowired
-    public MyProductService(ProductRepository productRepository) {
+    public MyProductService(ProductRepository productRepository, UserService userService, ShopListRepository shopListRepository) {
         this.productRepository = productRepository;
+        this.userService = userService;
+        this.shopListRepository = shopListRepository;
     }
 
     @Override
-    public ResponseEntity<MessageResponse> addProduct(Product product) {
+    public ResponseEntity<MessageResponse> addProduct(Product newProduct, Long shopListId) {
+
+        Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
+        Product product = new Product(newProduct.getProductName(),
+                newProduct.getProductAmount(),
+                newProduct.isProductStatus(),
+                newProduct.getCategory(),
+                shopList.get()
+        );
+
         productRepository.save(product);
         return ResponseEntity.ok(new MessageResponse("Product Add!"));
     }

@@ -6,6 +6,8 @@ import com.example.shopinglist1.shopList.ShopListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,22 +28,30 @@ public class ProductController {
         this.shopListService = shopListService;
     }
 
-    @PostMapping("/product/new")
-    public ResponseEntity<MessageResponse> postProduct(@RequestBody Product newProduct){
-        return productService.addProduct(newProduct);
-    }
+//    @PostMapping()
+//    public ResponseEntity<MessageResponse> postProduct(@RequestBody Product newProduct) {
+//        return productService.addProduct(newProduct);
+//    }
 
-    @GetMapping(value ="/products/{shopListId}", produces = "application/json")
-    public List<Product> getProducts(@PathVariable long shopListId){
+    @GetMapping(value = "/{shopListId}", produces = "application/json")
+    public List<Product> getProducts(@PathVariable long shopListId) {
         Optional<ShopList> shopList = shopListService.getShopListById(shopListId);
         return productService.getProductsByShopList(shopList.get());
 
     }
 
 
-     @GetMapping(value ="/product/{productId}", produces = "application/json")
-    public Optional<Product> getProduct(@PathVariable("productId") long productId){
+    @GetMapping(value = "/{shopListId}/{productId}", produces = "application/json")
+    public Optional<Product> getProduct(@PathVariable("productId") Long productId,
+                                        @PathVariable("shopListId") Long shopListId) {
         return productService.getProductById(productId);
+    }
+
+    @PostMapping(value = "/{shopListId}/newProduct", produces = "application/json")
+    public ResponseEntity<MessageResponse> addProduct(
+            @RequestBody Product product, @PathVariable Long shopListId) {
+
+        return productService.addProduct(product, shopListId);
     }
 
 

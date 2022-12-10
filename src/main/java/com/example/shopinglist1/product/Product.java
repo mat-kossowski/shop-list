@@ -42,4 +42,11 @@ public enum Category {
     INNE
 }
 
+    public Product(String productName, String productAmount, boolean productStatus, Category category, ShopList shopList) {
+        this.productName = productName;
+        this.productAmount = productAmount;
+        this.productStatus = productStatus;
+        this.category = category;
+        this.shopList = shopList;
+    }
 }
