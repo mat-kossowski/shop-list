@@ -13,4 +13,7 @@ public interface ProductService {
     ResponseEntity<MessageResponse> addProduct(Product product, Long shopListId);
     Optional<Product> getProductById(long productId);
     public List<Product> getProductsByShopList(ShopList shopList);
+
+    boolean deleteProduct(long productId);
+    boolean  updateProductStatus(long productId);
 }

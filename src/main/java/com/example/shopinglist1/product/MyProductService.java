@@ -7,11 +7,14 @@ import com.example.shopinglist1.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class MyProductService implements ProductService {
     private ProductRepository productRepository;
     private UserService userService;
@@ -28,9 +31,10 @@ public class MyProductService implements ProductService {
     public ResponseEntity<MessageResponse> addProduct(Product newProduct, Long shopListId) {
 
         Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
-        Product product = new Product(newProduct.getProductName(),
+        Product product = new Product(
+                newProduct.getProductName(),
                 newProduct.getProductAmount(),
-                newProduct.isProductStatus(),
+                false,
                 newProduct.getCategory(),
                 shopList.get()
         );
@@ -48,28 +52,30 @@ public class MyProductService implements ProductService {
     public List<Product> getProductsByShopList(ShopList shopList) {
         return productRepository.findProductsByShopList(shopList);
     }
-//    public List<Product> getProducts() {
-//        return productRepository.findAll(Sort.by(Sort.Direction.ASC, "productStatus", "productName"));
-//    }
-//
-//    public Product getProduct(long productId) {
-//        return productRepository.findById(productId).get();
-//    }
-//
-//
-//    public Optional<Product> getProductById(long productId) {
-//        return productRepository.findById(productId);
-//    }
-//
-//    public Product updateProductStatus(long productId, boolean productStatus) {
-//        if (getProductById(productId).isPresent()) {
-//            Product updateProduct = getProductById(productId).get();
-//            updateProduct.setProductStatus(productStatus);
-//            productRepository.save(updateProduct);
-//            return updateProduct;
-//        }
-//        return null;
-//    }
+
+    @Override
+    public boolean deleteProduct(long productId) {
+        Optional<Product> product = productRepository.findProductByProductId(productId);
+        if (product.isPresent()) {
+            productRepository.deleteProductByProductId(productId);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+
+    public boolean updateProductStatus(long productId) {
+        Optional<Product> product = productRepository.findProductByProductId(productId);
+
+        if (product.isPresent()) {
+            Product updateProduct = getProductById(productId).get();
+            updateProduct.setProductStatus(!updateProduct.isProductStatus());
+            productRepository.save(updateProduct);
+            return true;
+        }
+        return false;
+    }
 //
 //    public void updateProductAmount(long productId, String productAmount) {
 //        if (getProductById(productId).isPresent()) {
@@ -80,13 +86,6 @@ public class MyProductService implements ProductService {
 //        }
 //    }
 //
-//    public boolean deleteById(long productId) {
-//        if (getProductById(productId).isPresent()) {
-//            productRepository.deleteById(productId);
-//            return true;
-//        }
-//        return false;
-//    }
 
 
 }

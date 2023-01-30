@@ -28,40 +28,49 @@ public class ProductController {
         this.shopListService = shopListService;
     }
 
-//    @PostMapping()
-//    public ResponseEntity<MessageResponse> postProduct(@RequestBody Product newProduct) {
-//        return productService.addProduct(newProduct);
-//    }
+
 
     @GetMapping(value = "/{shopListId}", produces = "application/json")
-    public List<Product> getProducts(@PathVariable long shopListId) {
-        Optional<ShopList> shopList = shopListService.getShopListById(shopListId);
+    public List<Product> getProducts(@PathVariable long shopListId, @CurrentSecurityContext(expression = "authentication")
+    Authentication authentication) {
+        String name = authentication.getName();
+        Optional<ShopList> shopList = shopListService.getShopListById(shopListId, name);
         return productService.getProductsByShopList(shopList.get());
 
     }
 
 
     @GetMapping(value = "/{shopListId}/{productId}", produces = "application/json")
-    public Optional<Product> getProduct(@PathVariable("productId") Long productId,
-                                        @PathVariable("shopListId") Long shopListId) {
+    public Optional<Product> getProduct(@PathVariable("productId") long productId,
+                                        @PathVariable("shopListId") long shopListId) {
         return productService.getProductById(productId);
     }
 
-    @PostMapping(value = "/{shopListId}/newProduct", produces = "application/json")
+    @PostMapping(value = "/{shopListId}", produces = "application/json")
     public ResponseEntity<MessageResponse> addProduct(
-            @RequestBody Product product, @PathVariable Long shopListId) {
-
+            @RequestBody Product product, @PathVariable long shopListId) {
+        System.out.println(product);
         return productService.addProduct(product, shopListId);
     }
 
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Product> deleteProduct (@PathVariable("productId") Long productId) {
+        System.out.println(productId);
+        productService.deleteProduct(productId);
 
-//    @PutMapping("/product/status/{productId}")
-//    public Product updateProductStatus(
-//            @RequestBody Product product
-//            ){
-//        return productService.updateProductStatus(Math.toIntExact(product.getProductId()),product.isProductStatus());
-//
-//    }
+         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+
+
+    @PutMapping("/status/{productId}")
+    public ResponseEntity<Product> updateProductStatus(@PathVariable("productId") Long productId){
+        System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+        System.out.println(productId);
+        productService.updateProductStatus(productId);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 //    @PutMapping("/product/amount/{productId}")
 //    public void updateProductAmount(
 //            @PathVariable("productId") long productId,
@@ -70,9 +79,5 @@ public class ProductController {
 //        productService.updateProductAmount(productId,productAmount);
 //    }
 
-//    @DeleteMapping("/products/{productId}")
-//    public boolean deleteProduct(@PathVariable("productId") long productId){
-//        return productService.deleteById(productId);
-//
-//    }
+
 }

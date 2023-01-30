@@ -43,8 +43,10 @@ public class ShopListController {
     }
 
     @GetMapping("/{shopListId}")
-    public Optional<ShopList> getShopList(@PathVariable Long shopListId){
-        return shopListService.getShopListById(shopListId);
+    public Optional<ShopList> getShopList(@PathVariable Long shopListId, @CurrentSecurityContext(expression = "authentication")
+                                                   Authentication authentication){
+        String name = authentication.getName();
+        return shopListService.getShopListById(shopListId, name);
     }
 
 }

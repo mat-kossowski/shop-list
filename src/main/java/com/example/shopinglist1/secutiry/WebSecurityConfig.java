@@ -69,8 +69,12 @@ public class WebSecurityConfig {
 //                .antMatchers(HttpMethod.GET, "/api/patient/**").hasAnyAuthority(ADMIN, USER)
                 .antMatchers(HttpMethod.GET, "/api/shoplist/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/api/shoplist/**").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/api/shoplist/**").hasRole("USER")
+                .antMatchers(HttpMethod.PUT, "/api/shoplist/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/api/product/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/api/product/**").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/api/product/**").hasRole("USER")
+                .antMatchers(HttpMethod.PUT, "/api/product/**").hasRole("USER")
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/**").permitAll().anyRequest().authenticated();
         http.authenticationProvider(authenticationProvider(userDetailsService));

@@ -22,8 +22,13 @@ public class MyShopListService implements ShopListService {
         this.userService = userService;
     }
 
-    public Optional<ShopList> getShopListById(long id){
-        return shopListRepository.findShopListByShopListId(id);
+    public Optional<ShopList> getShopListById(Long shopListId, String userName) {
+        User user = userService.getUserByUserName(userName).get();
+        if (user.getShopLists().stream().anyMatch(shopList -> shopList.getShopListId() == shopListId)) {
+            return shopListRepository.findShopListByShopListId(shopListId);
+        }
+        return Optional.empty();
+
     }
 
     @Override

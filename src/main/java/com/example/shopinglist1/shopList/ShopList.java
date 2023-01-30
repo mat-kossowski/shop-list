@@ -3,16 +3,17 @@ package com.example.shopinglist1.shopList;
 import com.example.shopinglist1.product.Product;
 import com.example.shopinglist1.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,7 +23,7 @@ public class ShopList {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
-    private long shopListId;
+    private Long shopListId;
 
     private String listName;
 
@@ -39,8 +40,22 @@ public class ShopList {
     private List<Product> products = new ArrayList<>();
 
 
+
     public ShopList(String listName, User user) {
         this.listName = listName;
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ShopList shopList = (ShopList) o;
+        return shopListId != null && Objects.equals(shopListId, shopList.shopListId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 public interface ShopListService {
 
-    Optional<ShopList> getShopListById(long id);
+    Optional<ShopList> getShopListById(Long id, String userName);
 
     ResponseEntity<MessageResponse> addShopList(String name, String userName);
 
