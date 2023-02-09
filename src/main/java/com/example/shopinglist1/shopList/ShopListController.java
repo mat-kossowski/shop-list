@@ -1,8 +1,10 @@
 package com.example.shopinglist1.shopList;
 
 import com.example.shopinglist1.payload.response.MessageResponse;
+import com.example.shopinglist1.product.Product;
 import com.example.shopinglist1.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
@@ -47,6 +49,23 @@ public class ShopListController {
                                                    Authentication authentication){
         String name = authentication.getName();
         return shopListService.getShopListById(shopListId, name);
+    }
+
+    @PutMapping("/sort/{shopListId}")
+    public ResponseEntity<ShopList> updateShopListSort(@PathVariable Long shopListId, @CurrentSecurityContext(expression = "authentication")
+                                                   Authentication authentication){
+        System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+        System.out.println(shopListId);
+        String name = authentication.getName();
+        shopListService.updateShopListSort(shopListId, name);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+     @GetMapping("/sort/{shopListId}")
+    public boolean getStatusSort(@PathVariable Long shopListId, @CurrentSecurityContext(expression = "authentication")
+                                                   Authentication authentication){
+        String name = authentication.getName();
+        return shopListService.getStatusSortShopList(shopListId,name);
     }
 
 }

@@ -26,6 +26,7 @@ public class ShopList {
     private Long shopListId;
 
     private String listName;
+    private boolean alphabetically;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -41,9 +42,19 @@ public class ShopList {
 
 
 
-    public ShopList(String listName, User user) {
+
+    public ShopList(String listName, boolean alphabetically, User user) {
         this.listName = listName;
+        this.alphabetically = alphabetically;
         this.user = user;
+    }
+
+    public void setAlphabetically(boolean alphabetically) {
+        this.alphabetically = alphabetically;
+    }
+
+    public boolean isAlphabetically() {
+        return alphabetically;
     }
 
     @Override

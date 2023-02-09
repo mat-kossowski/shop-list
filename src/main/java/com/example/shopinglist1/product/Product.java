@@ -19,7 +19,9 @@ public class Product {
     @GeneratedValue
     private Long productId;
     private String productName;
-    private String productAmount;
+    private Long productAmount;
+
+    private String productUnits;
     private boolean productStatus;
 
     @Enumerated
@@ -37,18 +39,19 @@ public class Product {
 //        this.productStatus = false;
 //    }
 public enum Category {
-    NABIAL,
-    MIESO,
-    WARZYWA,
     CHEMIA,
+    MIESO,
+    NABIAL,
+    WARZYWA,
     INNE
 }
 
 
 
-    public Product(String productName, String productAmount, boolean productStatus, Category category, ShopList shopList) {
+    public Product(String productName, Long productAmount,String productUnits, boolean productStatus, Category category, ShopList shopList) {
         this.productName = productName;
         this.productAmount = productAmount;
+        this.productUnits = null;
         this.productStatus = false;
         this.category = category;
         this.shopList = shopList;

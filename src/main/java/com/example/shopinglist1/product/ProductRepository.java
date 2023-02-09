@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findProductByProductId(Long productId);
 
-    List<Product> findProductsByShopList(ShopList shopList);
+    List<Product> findProductsByShopListOrderByProductName(ShopList shopList);
 
 @Modifying
     @Query(value = "DELETE FROM Product p WHERE p.productId = :productId")

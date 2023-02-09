@@ -68,6 +68,8 @@ public class UserController {
     public Object currentUser(@CurrentSecurityContext(expression = "authentication")
                               Authentication authentication) {
         Object principal = authentication.getPrincipal();
+        System.out.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+        System.out.println(authentication);
         return principal;
     }
 

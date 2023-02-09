@@ -30,12 +30,24 @@ public class ProductController {
 
 
 
-    @GetMapping(value = "/{shopListId}", produces = "application/json")
-    public List<Product> getProducts(@PathVariable long shopListId, @CurrentSecurityContext(expression = "authentication")
+    @GetMapping(value = "/category/{shopListId}", produces = "application/json")
+    public List<Product> getProductsCategory(@PathVariable long shopListId, @CurrentSecurityContext(expression = "authentication")
     Authentication authentication) {
         String name = authentication.getName();
         Optional<ShopList> shopList = shopListService.getShopListById(shopListId, name);
-        return productService.getProductsByShopList(shopList.get());
+//        List<Product> products = productService.getProductsByShopListOrderByNameAndCategory(shopList.get());
+//        System.out.println(products);
+        return productService.getProductsByShopListOrderByNameAndCategory(shopList.get());
+
+    }
+    @GetMapping(value = "/alphabet/{shopListId}", produces = "application/json")
+    public List<Product> getProductsAlphabet(@PathVariable long shopListId, @CurrentSecurityContext(expression = "authentication")
+    Authentication authentication) {
+        String name = authentication.getName();
+        Optional<ShopList> shopList = shopListService.getShopListById(shopListId, name);
+//        List<Product> products = productService.getProductsByShopListOrderByName(shopList.get());
+//        System.out.println(products);
+        return productService.getProductsByShopListOrderByName(shopList.get());
 
     }
 
@@ -70,6 +82,15 @@ public class ProductController {
         productService.updateProductStatus(productId);
         return new ResponseEntity<>(HttpStatus.OK);
 
+    }
+
+    @PostMapping(value = "/update/{shopListId}", produces = "application/json")
+    public ResponseEntity<MessageResponse> updateProduct(
+            @RequestBody Product product, @PathVariable long shopListId) {
+        System.out.println(product);
+
+        productService.updateProduct(product,shopListId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 //    @PutMapping("/product/amount/{productId}")
 //    public void updateProductAmount(

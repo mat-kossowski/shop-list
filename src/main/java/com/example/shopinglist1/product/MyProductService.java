@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,11 +31,17 @@ public class MyProductService implements ProductService {
 
     @Override
     public ResponseEntity<MessageResponse> addProduct(Product newProduct, Long shopListId) {
-
+        String units;
         Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
+        if (newProduct.getProductUnits() == null) {
+            units = null;
+        } else {
+            units = newProduct.getProductUnits();
+        }
         Product product = new Product(
                 newProduct.getProductName(),
                 newProduct.getProductAmount(),
+                units,
                 false,
                 newProduct.getCategory(),
                 shopList.get()
@@ -48,9 +56,21 @@ public class MyProductService implements ProductService {
         return productRepository.findProductByProductId(productId);
     }
 
+
     @Override
-    public List<Product> getProductsByShopList(ShopList shopList) {
-        return productRepository.findProductsByShopList(shopList);
+    public List<Product> getProductsByShopListOrderByName(ShopList shopList) {
+        List<Product> products = productRepository.findProductsByShopListOrderByProductName(shopList);
+
+        return products;
+    }
+
+    @Override
+    public List<Product> getProductsByShopListOrderByNameAndCategory(ShopList shopList) {
+        List<Product> products = productRepository.findProductsByShopListOrderByProductName(shopList);
+
+        return products.stream()
+                .sorted(Comparator.comparing(Product::getCategory))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -76,16 +96,19 @@ public class MyProductService implements ProductService {
         }
         return false;
     }
-//
-//    public void updateProductAmount(long productId, String productAmount) {
-//        if (getProductById(productId).isPresent()) {
-//            Product updateProduct = getProductById(productId).get();
-//            updateProduct.setProductAmount(productAmount);
-//            productRepository.save(updateProduct);
-//
-//        }
-//    }
-//
+
+    public boolean updateProduct(Product updateProduct, Long shopListId) {
+        Optional<Product> product = productRepository.findProductByProductId(updateProduct.getProductId());
+        if (product.isPresent()) {
+            Product updatingProduct = getProductById(updateProduct.getProductId()).get();
+            updatingProduct.setProductName(updateProduct.getProductName());
+            updatingProduct.setProductUnits(updateProduct.getProductUnits());
+            updatingProduct.setProductAmount(updateProduct.getProductAmount());
+            productRepository.save(updateProduct);
+            return true;
+        }
+        return false;
+    }
 
 
 }
