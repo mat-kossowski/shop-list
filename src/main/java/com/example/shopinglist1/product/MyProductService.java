@@ -33,10 +33,10 @@ public class MyProductService implements ProductService {
     public ResponseEntity<MessageResponse> addProduct(Product newProduct, Long shopListId) {
         String units;
         Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
-        if (newProduct.getProductUnits() == null) {
+        if (newProduct.getProductUnit() == null) {
             units = null;
         } else {
-            units = newProduct.getProductUnits();
+            units = newProduct.getProductUnit();
         }
         Product product = new Product(
                 newProduct.getProductName(),
@@ -97,14 +97,14 @@ public class MyProductService implements ProductService {
         return false;
     }
 
-    public boolean updateProduct(Product updateProduct, Long shopListId) {
+    public boolean updateProduct(Product updateProduct) {
         Optional<Product> product = productRepository.findProductByProductId(updateProduct.getProductId());
         if (product.isPresent()) {
-            Product updatingProduct = getProductById(updateProduct.getProductId()).get();
+            Product updatingProduct = getProductById(product.get().getProductId()).get();
             updatingProduct.setProductName(updateProduct.getProductName());
-            updatingProduct.setProductUnits(updateProduct.getProductUnits());
+            updatingProduct.setProductUnit(updateProduct.getProductUnit());
             updatingProduct.setProductAmount(updateProduct.getProductAmount());
-            productRepository.save(updateProduct);
+            productRepository.save(updatingProduct);
             return true;
         }
         return false;

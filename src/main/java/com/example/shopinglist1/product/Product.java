@@ -21,7 +21,7 @@ public class Product {
     private String productName;
     private Long productAmount;
 
-    private String productUnits;
+    private String productUnit;
     private boolean productStatus;
 
     @Enumerated
@@ -48,10 +48,10 @@ public enum Category {
 
 
 
-    public Product(String productName, Long productAmount,String productUnits, boolean productStatus, Category category, ShopList shopList) {
+    public Product(String productName, Long productAmount,String productUnit, boolean productStatus, Category category, ShopList shopList) {
         this.productName = productName;
         this.productAmount = productAmount;
-        this.productUnits = null;
+        this.productUnit = null;
         this.productStatus = false;
         this.category = category;
         this.shopList = shopList;

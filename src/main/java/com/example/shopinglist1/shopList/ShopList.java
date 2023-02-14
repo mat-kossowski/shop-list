@@ -36,6 +36,7 @@ public class ShopList {
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
+             orphanRemoval = true,
             mappedBy = "shopList"
     )
     private List<Product> products = new ArrayList<>();
