@@ -68,4 +68,24 @@ public class ShopListController {
         return shopListService.getStatusSortShopList(shopListId,name);
     }
 
+    @DeleteMapping("/{shopListId}")
+    public ResponseEntity<ShopList> deleteShopList (@PathVariable("shopListId") Long shopListId) {
+        System.out.println(shopListId);
+        shopListService.deleteShopList(shopListId);
+
+
+         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+      @PutMapping(value = "/update", produces = "application/json")
+    public ResponseEntity<MessageResponse> updateShopListName(
+            @RequestBody ShopList shopList, @CurrentSecurityContext(expression = "authentication")
+                                                   Authentication authentication ) {
+        String name = authentication.getName();
+
+
+        shopListService.updateShopListName(shopList,name);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

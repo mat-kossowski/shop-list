@@ -11,7 +11,6 @@ import java.util.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -28,14 +27,28 @@ public class User {
     private Role role;
     @JsonIgnore
     private String password;
-
     @JsonIgnore
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
-            mappedBy = "user"
+    @ManyToMany(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            fetch = FetchType.EAGER
     )
-    private List<ShopList> shopLists = new ArrayList<>();
+    @JoinTable(
+            name = "users_shop_lists",
+            joinColumns = @JoinColumn(name = "shops_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "shops_shop_list_id")
+    )
+    private Set<ShopList> shopLists = new HashSet<>();
+
+
+    public void addShopList(ShopList shopList) {
+        this.shopLists.add(shopList);
+        shopList.getUsers().add(this);
+    }
+
+    public void removeShopList(ShopList shopList) {
+        this.shopLists.remove(shopList);
+        shopList.getUsers().remove(this);
+    }
 
     public Long getUserId() {
         return userId;

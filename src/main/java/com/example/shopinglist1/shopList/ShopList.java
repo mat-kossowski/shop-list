@@ -7,30 +7,28 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table()
 public class ShopList {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
     private Long shopListId;
 
     private String listName;
     private boolean alphabetically;
+    @JsonIgnore
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "shopLists")
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Set<User> users = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(
@@ -41,13 +39,11 @@ public class ShopList {
     private List<Product> products = new ArrayList<>();
 
 
-
-
-    public ShopList(String listName, boolean alphabetically, User user) {
+    public ShopList(String listName, boolean alphabetically) {
         this.listName = listName;
         this.alphabetically = alphabetically;
-        this.user = user;
     }
+
 
     public void setAlphabetically(boolean alphabetically) {
         this.alphabetically = alphabetically;

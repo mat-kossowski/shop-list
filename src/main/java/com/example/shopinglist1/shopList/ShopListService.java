@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-@Service
+
 public interface ShopListService {
-
+//
     Optional<ShopList> getShopListById(Long id, String userName);
 
     ResponseEntity<MessageResponse> addShopList(String name, String userName);
@@ -17,4 +18,7 @@ public interface ShopListService {
     List<ShopList> getShopListsUser(String userName);
     boolean getStatusSortShopList(long shopListId, String userName);
     boolean updateShopListSort(long shopListId, String userName);
+
+    boolean deleteShopList(long shopListId);
+    boolean updateShopListName(ShopList shopList, String userName);
 }

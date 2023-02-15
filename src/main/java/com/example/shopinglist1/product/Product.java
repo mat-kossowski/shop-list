@@ -9,11 +9,9 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table()
 public class Product {
     @Id
     @GeneratedValue
