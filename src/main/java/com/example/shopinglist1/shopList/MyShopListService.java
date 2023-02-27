@@ -3,31 +3,33 @@ package com.example.shopinglist1.shopList;
 import com.example.shopinglist1.payload.response.MessageResponse;
 import com.example.shopinglist1.product.ProductRepository;
 import com.example.shopinglist1.user.User;
-import com.example.shopinglist1.user.UserRepository;
 import com.example.shopinglist1.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class MyShopListService implements ShopListService {
-
+    private ProductRepository productRepository;
     private ShopListRepository shopListRepository;
     private UserService userService;
     private UserRepository userRepository;
 
-    private ProductRepository productRepository;
+
 
     @Autowired
-    public MyShopListService(ShopListRepository shopListRepository, UserService userService, UserRepository userRepository, ProductRepository productRepository) {
+
+    public MyShopListService(ProductRepository productRepository, ShopListRepository shopListRepository, UserService userService, UserRepository userRepository) {
+        this.productRepository = productRepository;
         this.shopListRepository = shopListRepository;
         this.userService = userService;
         this.userRepository = userRepository;
-        this.productRepository = productRepository;
+
     }
 
     public Optional<ShopList> getShopListById(Long shopListId, String userName) {
@@ -120,6 +122,30 @@ public class MyShopListService implements ShopListService {
     public boolean updateShopListName(ShopList updateShopList, String userName) {
         Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(updateShopList.getShopListId());
         if (shopList.isPresent()) {
+            ShopList updatingShopList = getShopListById(shopList.get().getShopListId(), userName).get();
+            updatingShopList.setListName(updateShopList.getListName());
+            shopListRepository.save(updatingShopList);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteShopList(long shopListId) {
+        Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
+        if(shopList.isPresent()){
+            productRepository.deleteProductsByShopListId(shopList.get().getShopListId());
+            shopListRepository.deleteShopListByShopListId(shopListId);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateShopListName(ShopList updateShopList, String userName) {
+        Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(updateShopList.getShopListId());
+        if(shopList.isPresent()){
             ShopList updatingShopList = getShopListById(shopList.get().getShopListId(), userName).get();
             updatingShopList.setListName(updateShopList.getListName());
             shopListRepository.save(updatingShopList);

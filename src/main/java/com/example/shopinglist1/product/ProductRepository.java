@@ -16,7 +16,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findProductsByShopListOrderByProductName(ShopList shopList);
 
-@Modifying
+    @Modifying
+    @Query(value = "DELETE FROM Product  WHERE shopList.shopListId = :shopListId")
+    void deleteProductsByShopListId(Long shopListId);
+
+    @Modifying
     @Query(value = "DELETE FROM Product p WHERE p.productId = :productId")
     void deleteProductByProductId(Long productId);
 
