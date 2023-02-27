@@ -1,5 +1,6 @@
 package com.example.shopinglist1.shopList;
 
+import com.example.shopinglist1.payload.request.RegisterRequest;
 import com.example.shopinglist1.payload.response.MessageResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,4 +22,6 @@ public interface ShopListService {
 
     boolean deleteShopList(long shopListId);
     boolean updateShopListName(ShopList shopList, String userName);
+
+    ResponseEntity<MessageResponse> entrustingList(long shopListId, String userName);
 }

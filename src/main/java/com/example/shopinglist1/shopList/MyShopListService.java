@@ -23,11 +23,11 @@ public class MyShopListService implements ShopListService {
     private ProductRepository productRepository;
 
     @Autowired
-    public MyShopListService(ShopListRepository shopListRepository, UserService userService, UserRepository userRepository,ProductRepository productRepository) {
+    public MyShopListService(ShopListRepository shopListRepository, UserService userService, UserRepository userRepository, ProductRepository productRepository) {
         this.shopListRepository = shopListRepository;
         this.userService = userService;
         this.userRepository = userRepository;
-        this.productRepository =  productRepository;
+        this.productRepository = productRepository;
     }
 
     public Optional<ShopList> getShopListById(Long shopListId, String userName) {
@@ -44,12 +44,35 @@ public class MyShopListService implements ShopListService {
         Set<ShopList> shopLists = new HashSet<>();
         User user = userService.getUserByUserName(userName).get();
         ShopList shopList = new ShopList(listName, true);
-//        shopLists.add(shopList);
+
         user.addShopList(shopList);
         shopListRepository.save(shopList);
-//        user.setShopLists(shopLists);
+
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("Add new Shop List!"));
+    }
+
+    @Override
+    public ResponseEntity<MessageResponse> entrustingList(long shopListId, String userName) {
+        System.out.println("11111111111111111111111111111111111");
+        Optional<User> user = userService.getUserByUserName(userName);
+        if (user.isEmpty()) {
+            System.out.println("222222222222222222222222222222");
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: User no exist!"));
+        } else {
+            System.out.println("33333333333333333333333333333333333333");
+            Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
+            if (shopList.isPresent()) {
+                System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+                user.get().addShopList(shopList.get());
+                shopListRepository.save(shopList.get());
+                userRepository.save(user.get());
+                return ResponseEntity.ok(new MessageResponse("Add new Shop List!"));
+            }
+        }
+
+
+        return ResponseEntity.badRequest().body(new MessageResponse("Error: List not provided"));
     }
 
     @Override
@@ -64,8 +87,8 @@ public class MyShopListService implements ShopListService {
     public boolean getStatusSortShopList(long shopListId, String userName) {
         Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
         if (shopList.isPresent()) {
-           Optional<ShopList> updateShopList = getShopListById(shopListId, userName);
-           return updateShopList.get().isAlphabetically();
+            Optional<ShopList> updateShopList = getShopListById(shopListId, userName);
+            return updateShopList.get().isAlphabetically();
         }
         return false;
     }
@@ -74,17 +97,18 @@ public class MyShopListService implements ShopListService {
     public boolean updateShopListSort(long shopListId, String userName) {
         Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
         if (shopList.isPresent()) {
-           Optional<ShopList> updateShopList = getShopListById(shopListId, userName);
-           updateShopList.get().setAlphabetically(!updateShopList.get().isAlphabetically());
-           shopListRepository.save(updateShopList.get());
-           return true;
+            Optional<ShopList> updateShopList = getShopListById(shopListId, userName);
+            updateShopList.get().setAlphabetically(!updateShopList.get().isAlphabetically());
+            shopListRepository.save(updateShopList.get());
+            return true;
         }
         return false;
     }
-@Override
+
+    @Override
     public boolean deleteShopList(long shopListId) {
         Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
-        if(shopList.isPresent()){
+        if (shopList.isPresent()) {
             productRepository.deleteProductsByShopListId(shopList.get().getShopListId());
             shopListRepository.deleteShopListByShopListId(shopListId);
             return true;
@@ -95,7 +119,7 @@ public class MyShopListService implements ShopListService {
     @Override
     public boolean updateShopListName(ShopList updateShopList, String userName) {
         Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(updateShopList.getShopListId());
-        if(shopList.isPresent()){
+        if (shopList.isPresent()) {
             ShopList updatingShopList = getShopListById(shopList.get().getShopListId(), userName).get();
             updatingShopList.setListName(updateShopList.getListName());
             shopListRepository.save(updatingShopList);
@@ -104,5 +128,6 @@ public class MyShopListService implements ShopListService {
 
         return false;
     }
+
 
 }

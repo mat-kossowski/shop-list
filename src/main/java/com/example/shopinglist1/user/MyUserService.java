@@ -55,6 +55,11 @@ public class MyUserService implements UserService {
     }
 
     @Override
+    public boolean isUserExistsByUserName(RegisterRequest registerRequest) {
+        return userRepository.existsByUserName(registerRequest.getUserName());
+    }
+
+    @Override
     public ResponseCookie authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
@@ -73,7 +78,7 @@ public class MyUserService implements UserService {
 
     @Override
     public ResponseEntity<MessageResponse> addNewUser(RegisterRequest registerRequest) {
-        if (isUserExistsByEmail(registerRequest)) {
+        if (isUserExistsByEmail(registerRequest) || isUserExistsByUserName(registerRequest)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
         User user = new User(registerRequest.getUserName(),registerRequest.getEmail(),registerRequest.getRole(),

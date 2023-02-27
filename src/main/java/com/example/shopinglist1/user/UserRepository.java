@@ -18,4 +18,5 @@ Optional<User> findUserByUserId(Long userId);
 
 
     Boolean existsByEmail(String email);
+    boolean existsByUserName(String name);
 }

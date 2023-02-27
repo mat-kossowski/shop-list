@@ -2,6 +2,7 @@ package com.example.shopinglist1.shopList;
 
 import com.example.shopinglist1.payload.response.MessageResponse;
 import com.example.shopinglist1.product.Product;
+import com.example.shopinglist1.user.User;
 import com.example.shopinglist1.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,21 +40,21 @@ public class ShopListController {
 
     @GetMapping()
     public List<ShopList> getAllShowList(@CurrentSecurityContext(expression = "authentication")
-                                                   Authentication authentication){
+                                         Authentication authentication) {
         String name = authentication.getName();
         return shopListService.getShopListsUser(name);
     }
 
     @GetMapping("/{shopListId}")
     public Optional<ShopList> getShopList(@PathVariable Long shopListId, @CurrentSecurityContext(expression = "authentication")
-                                                   Authentication authentication){
+    Authentication authentication) {
         String name = authentication.getName();
         return shopListService.getShopListById(shopListId, name);
     }
 
     @PutMapping("/sort/{shopListId}")
     public ResponseEntity<ShopList> updateShopListSort(@PathVariable Long shopListId, @CurrentSecurityContext(expression = "authentication")
-                                                   Authentication authentication){
+    Authentication authentication) {
         System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
         System.out.println(shopListId);
         String name = authentication.getName();
@@ -61,31 +62,52 @@ public class ShopListController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
-     @GetMapping("/sort/{shopListId}")
+
+    @GetMapping("/sort/{shopListId}")
     public boolean getStatusSort(@PathVariable Long shopListId, @CurrentSecurityContext(expression = "authentication")
-                                                   Authentication authentication){
+    Authentication authentication) {
         String name = authentication.getName();
-        return shopListService.getStatusSortShopList(shopListId,name);
+        return shopListService.getStatusSortShopList(shopListId, name);
     }
 
     @DeleteMapping("/{shopListId}")
-    public ResponseEntity<ShopList> deleteShopList (@PathVariable("shopListId") Long shopListId) {
+    public ResponseEntity<ShopList> deleteShopList(@PathVariable("shopListId") Long shopListId) {
         System.out.println(shopListId);
         shopListService.deleteShopList(shopListId);
 
 
-         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
-      @PutMapping(value = "/update", produces = "application/json")
+
+    @PutMapping(value = "/update", produces = "application/json")
     public ResponseEntity<MessageResponse> updateShopListName(
             @RequestBody ShopList shopList, @CurrentSecurityContext(expression = "authentication")
-                                                   Authentication authentication ) {
+    Authentication authentication) {
         String name = authentication.getName();
 
 
-        shopListService.updateShopListName(shopList,name);
+        shopListService.updateShopListName(shopList, name);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping(value = "/entrusting/{shopListId}", produces = "application/json")
+    public ResponseEntity<MessageResponse> entrustingShopList(
+            @PathVariable("shopListId") Long shopListId,
+            @RequestBody User user, @CurrentSecurityContext(expression = "authentication")
+            Authentication authentication) {
+        String name = authentication.getName();
+
+
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        System.out.println(shopListId);
+        System.out.println(user);
+        System.out.println(user.getUserName());
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        shopListService.entrustingList(shopListId, user.getUserName());
+        System.out.println("OOOOOOLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

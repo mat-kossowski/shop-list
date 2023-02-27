@@ -16,6 +16,7 @@ public interface UserService {
     boolean addUser(User user);
 
     boolean isUserExistsByEmail(RegisterRequest registerRequest);
+    boolean isUserExistsByUserName(RegisterRequest registerRequest);
      ResponseCookie authenticateUser(LoginRequest loginRequest);
     ResponseCookie logoutUser();
 
