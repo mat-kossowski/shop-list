@@ -3,14 +3,17 @@ package com.example.shopinglist1.shopList;
 import com.example.shopinglist1.payload.response.MessageResponse;
 import com.example.shopinglist1.product.ProductRepository;
 import com.example.shopinglist1.user.User;
+import com.example.shopinglist1.user.UserRepository;
 import com.example.shopinglist1.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -56,25 +59,24 @@ public class MyShopListService implements ShopListService {
 
     @Override
     public ResponseEntity<MessageResponse> entrustingList(long shopListId, String userName) {
-        System.out.println("11111111111111111111111111111111111");
+        System.out.println("111111111111111111111111111111111111111111111111111111111111111111111");
         Optional<User> user = userService.getUserByUserName(userName);
         if (user.isEmpty()) {
-            System.out.println("222222222222222222222222222222");
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: User no exist!"));
+             System.out.println("2222222222222222222222222222222222222222222222222222222222222222222222222222222");
+            return ResponseEntity.ok(new MessageResponse("User no exist"));
         } else {
-            System.out.println("33333333333333333333333333333333333333");
             Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
             if (shopList.isPresent()) {
-                System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+                 System.out.println("444444444444444444444444444444444444444444444444444444444444444444444444");
                 user.get().addShopList(shopList.get());
                 shopListRepository.save(shopList.get());
                 userRepository.save(user.get());
-                return ResponseEntity.ok(new MessageResponse("Add new Shop List!"));
+                return ResponseEntity.ok(new MessageResponse("Add user new Shop List!"));
+            }else {
+                 System.out.println("555555555555555555555555555555555555555555555555555555555555555555555555555555555");
+                return ResponseEntity.ok(new MessageResponse("User no exist"));
             }
         }
-
-
-        return ResponseEntity.badRequest().body(new MessageResponse("Error: List not provided"));
     }
 
     @Override
@@ -118,29 +120,6 @@ public class MyShopListService implements ShopListService {
         return false;
     }
 
-    @Override
-    public boolean updateShopListName(ShopList updateShopList, String userName) {
-        Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(updateShopList.getShopListId());
-        if (shopList.isPresent()) {
-            ShopList updatingShopList = getShopListById(shopList.get().getShopListId(), userName).get();
-            updatingShopList.setListName(updateShopList.getListName());
-            shopListRepository.save(updatingShopList);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean deleteShopList(long shopListId) {
-        Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
-        if(shopList.isPresent()){
-            productRepository.deleteProductsByShopListId(shopList.get().getShopListId());
-            shopListRepository.deleteShopListByShopListId(shopListId);
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public boolean updateShopListName(ShopList updateShopList, String userName) {

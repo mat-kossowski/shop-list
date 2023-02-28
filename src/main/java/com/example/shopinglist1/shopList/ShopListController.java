@@ -91,22 +91,15 @@ public class ShopListController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping(value = "/entrusting/{shopListId}", produces = "application/json")
+    @PostMapping(value = "/entrusting/{shopListId}", produces = "application/json")
     public ResponseEntity<MessageResponse> entrustingShopList(
             @PathVariable("shopListId") Long shopListId,
-            @RequestBody User user, @CurrentSecurityContext(expression = "authentication")
-            Authentication authentication) {
-        String name = authentication.getName();
-
-
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+            @RequestBody User user) {
         System.out.println(shopListId);
-        System.out.println(user);
         System.out.println(user.getUserName());
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-        shopListService.entrustingList(shopListId, user.getUserName());
-        System.out.println("OOOOOOLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-        return new ResponseEntity<>(HttpStatus.OK);
+        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+
+        return shopListService.entrustingList(shopListId, user.getUserName());
     }
 
 

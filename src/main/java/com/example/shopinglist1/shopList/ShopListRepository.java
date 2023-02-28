@@ -29,10 +29,5 @@ public interface ShopListRepository extends JpaRepository<ShopList, Long> {
     void deleteShopListByShopListId(long shopListId);
 
 
-    @Modifying
-    @Query(value = "DELETE FROM ShopList sl WHERE sl.shopListId = :shopListId")
-    void deleteShopListByShopListId(long shopListId);
-
-
 }
 
