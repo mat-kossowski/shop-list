@@ -55,8 +55,6 @@ public class ShopListController {
     @PutMapping("/sort/{shopListId}")
     public ResponseEntity<ShopList> updateShopListSort(@PathVariable Long shopListId, @CurrentSecurityContext(expression = "authentication")
     Authentication authentication) {
-        System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-        System.out.println(shopListId);
         String name = authentication.getName();
         shopListService.updateShopListSort(shopListId, name);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -74,8 +72,6 @@ public class ShopListController {
     public ResponseEntity<ShopList> deleteShopList(@PathVariable("shopListId") Long shopListId) {
         System.out.println(shopListId);
         shopListService.deleteShopList(shopListId);
-
-
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
@@ -85,8 +81,6 @@ public class ShopListController {
             @RequestBody ShopList shopList, @CurrentSecurityContext(expression = "authentication")
     Authentication authentication) {
         String name = authentication.getName();
-
-
         shopListService.updateShopListName(shopList, name);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -95,10 +89,6 @@ public class ShopListController {
     public ResponseEntity<MessageResponse> entrustingShopList(
             @PathVariable("shopListId") Long shopListId,
             @RequestBody User user) {
-        System.out.println(shopListId);
-        System.out.println(user.getUserName());
-        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-
         return shopListService.entrustingList(shopListId, user.getUserName());
     }
 

@@ -59,21 +59,17 @@ public class MyShopListService implements ShopListService {
 
     @Override
     public ResponseEntity<MessageResponse> entrustingList(long shopListId, String userName) {
-        System.out.println("111111111111111111111111111111111111111111111111111111111111111111111");
         Optional<User> user = userService.getUserByUserName(userName);
         if (user.isEmpty()) {
-             System.out.println("2222222222222222222222222222222222222222222222222222222222222222222222222222222");
             return ResponseEntity.ok(new MessageResponse("User no exist"));
         } else {
             Optional<ShopList> shopList = shopListRepository.findShopListByShopListId(shopListId);
             if (shopList.isPresent()) {
-                 System.out.println("444444444444444444444444444444444444444444444444444444444444444444444444");
                 user.get().addShopList(shopList.get());
                 shopListRepository.save(shopList.get());
                 userRepository.save(user.get());
                 return ResponseEntity.ok(new MessageResponse("Add user new Shop List!"));
             }else {
-                 System.out.println("555555555555555555555555555555555555555555555555555555555555555555555555555555555");
                 return ResponseEntity.ok(new MessageResponse("User no exist"));
             }
         }
@@ -82,8 +78,6 @@ public class MyShopListService implements ShopListService {
     @Override
     public List<ShopList> getShopListsUser(String userName) {
         User user = userService.getUserByUserName(userName).get();
-        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
-
         return shopListRepository.findShopListsByUser(user.getUserId());
     }
 

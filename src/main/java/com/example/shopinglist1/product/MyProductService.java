@@ -38,6 +38,7 @@ public class MyProductService implements ProductService {
         } else {
             units = newProduct.getProductUnit();
         }
+        System.out.println(units);
         Product product = new Product(
                 newProduct.getProductName(),
                 newProduct.getProductAmount(),
@@ -46,7 +47,7 @@ public class MyProductService implements ProductService {
                 newProduct.getCategory(),
                 shopList.get()
         );
-
+        product.setProductUnit(units);
         productRepository.save(product);
         return ResponseEntity.ok(new MessageResponse("Product Add!"));
     }
@@ -67,7 +68,6 @@ public class MyProductService implements ProductService {
     @Override
     public List<Product> getProductsByShopListOrderByNameAndCategory(ShopList shopList) {
         List<Product> products = productRepository.findProductsByShopListOrderByProductName(shopList);
-
         return products.stream()
                 .sorted(Comparator.comparing(Product::getCategory))
                 .collect(Collectors.toList());
@@ -87,7 +87,6 @@ public class MyProductService implements ProductService {
 
     public boolean updateProductStatus(long productId) {
         Optional<Product> product = productRepository.findProductByProductId(productId);
-
         if (product.isPresent()) {
             Product updateProduct = getProductById(productId).get();
             updateProduct.setProductStatus(!updateProduct.isProductStatus());

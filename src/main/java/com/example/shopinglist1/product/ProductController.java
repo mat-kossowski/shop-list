@@ -35,8 +35,6 @@ public class ProductController {
     Authentication authentication) {
         String name = authentication.getName();
         Optional<ShopList> shopList = shopListService.getShopListById(shopListId, name);
-//        List<Product> products = productService.getProductsByShopListOrderByNameAndCategory(shopList.get());
-//        System.out.println(products);
         return productService.getProductsByShopListOrderByNameAndCategory(shopList.get());
 
     }
@@ -45,8 +43,6 @@ public class ProductController {
     Authentication authentication) {
         String name = authentication.getName();
         Optional<ShopList> shopList = shopListService.getShopListById(shopListId, name);
-//        List<Product> products = productService.getProductsByShopListOrderByName(shopList.get());
-//        System.out.println(products);
         return productService.getProductsByShopListOrderByName(shopList.get());
 
     }
@@ -61,15 +57,12 @@ public class ProductController {
     @PostMapping(value = "/{shopListId}", produces = "application/json")
     public ResponseEntity<MessageResponse> addProduct(
             @RequestBody Product product, @PathVariable long shopListId) {
-        System.out.println(product);
         return productService.addProduct(product, shopListId);
     }
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<Product> deleteProduct (@PathVariable("productId") Long productId) {
-        System.out.println(productId);
         productService.deleteProduct(productId);
-
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
@@ -77,8 +70,6 @@ public class ProductController {
 
     @PutMapping("/status/{productId}")
     public ResponseEntity<Product> updateProductStatus(@PathVariable("productId") Long productId){
-        System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-        System.out.println(productId);
         productService.updateProductStatus(productId);
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -87,18 +78,8 @@ public class ProductController {
     @PutMapping(value = "/update", produces = "application/json")
     public ResponseEntity<MessageResponse> updateProduct(
             @RequestBody Product product) {
-        System.out.println(product);
-
         productService.updateProduct(product);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-//    @PutMapping("/product/amount/{productId}")
-//    public void updateProductAmount(
-//            @PathVariable("productId") long productId,
-//            @RequestParam("productAmount") String productAmount
-//            ){
-//        productService.updateProductAmount(productId,productAmount);
-//    }
-
 
 }
